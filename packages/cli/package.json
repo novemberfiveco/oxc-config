@@ -1,6 +1,6 @@
 {
   "name": "@novemberfiveco/oxc-config-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Scaffolds November Five oxc (oxlint + oxfmt) setup into a project",
   "keywords": [
