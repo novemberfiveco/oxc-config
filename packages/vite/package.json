@@ -47,6 +47,9 @@
     "access": "public"
   },
   "release-it": {
+    "npm": {
+      "skipChecks": true
+    },
     "git": {
       "commitMessage": "chore: release v${version}",
       "tagName": "oxc-config-vite@${version}"
