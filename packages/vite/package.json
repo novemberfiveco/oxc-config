@@ -31,7 +31,7 @@
     ".oxfmtrc.json"
   ],
   "engines": {
-    "node": ">=22.14.0"
+    "node": "^20.19.0 || >=22.18.0"
   },
   "scripts": {
     "release": "release-it"

@@ -9,9 +9,13 @@ Per-developer setup (each machine — can't be automated):
 export function printSummary(actions) {
   for (const a of actions) {
     const label =
-      { create: '＋ create', merge: '↻ merge', patch: '✎ patch', skip: '· skip', advise: '! advise' }[
-        a.type
-      ] ?? a.type;
+      {
+        create: '＋ create',
+        merge: '↻ merge',
+        patch: '✎ patch',
+        skip: '· skip',
+        advise: '! advise',
+      }[a.type] ?? a.type;
     console.log(`  ${label}  ${a.target}${a.note ? `  (${a.note})` : ''}`);
   }
 }
