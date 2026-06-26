@@ -1,0 +1,77 @@
+{
+  "name": "@novemberfiveco/oxc-config-cli",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Scaffolds November Five oxc (oxlint + oxfmt) setup into a project",
+  "keywords": [
+    "oxc",
+    "oxlint",
+    "oxfmt",
+    "cli",
+    "init",
+    "config"
+  ],
+  "homepage": "https://github.com/novemberfiveco/oxc-config/blob/main/packages/cli/README.md",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./parse-args": "./src/parse-args.mjs",
+    "./checklist": "./src/checklist.mjs"
+  },
+  "bin": {
+    "oxc-config-init": "./bin/cli.mjs"
+  },
+  "files": [
+    "src",
+    "bin",
+    "templates"
+  ],
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "release": "release-it"
+  },
+  "dependencies": {
+    "comment-json": "^4.2.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release v${version}",
+      "tagName": "oxc-config-cli@${version}"
+    },
+    "github": {
+      "release": true,
+      "autoGenerate": true,
+      "releaseName": "oxc-config-cli@${version}",
+      "tokenRef": "GITHUB_TOKEN"
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {
+              "type": "perf",
+              "section": "Performance improvements"
+            }
+          ]
+        },
+        "infile": "CHANGELOG.md",
+        "ignoreRecommendedBump": true
+      }
+    }
+  }
+}

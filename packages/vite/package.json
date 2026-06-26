@@ -1,0 +1,84 @@
+{
+  "name": "@novemberfiveco/oxc-config-vite",
+  "version": "0.1.0",
+  "private": false,
+  "description": "oxlint + oxfmt configuration for Vite / React projects used by November Five",
+  "keywords": [
+    "oxc",
+    "oxlint",
+    "oxfmt",
+    "vite",
+    "react",
+    "config"
+  ],
+  "homepage": "https://github.com/novemberfiveco/oxc-config/blob/main/packages/vite/README.md",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "oxc-config-vite": "./bin/cli.mjs"
+  },
+  "exports": {
+    ".": "./index.mjs",
+    "./oxfmt": "./oxfmt.mjs",
+    "./oxlintrc.json": "./.oxlintrc.json",
+    "./oxfmtrc.json": "./.oxfmtrc.json"
+  },
+  "files": [
+    "bin",
+    "index.mjs",
+    "oxfmt.mjs",
+    ".oxlintrc.json",
+    ".oxfmtrc.json"
+  ],
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "release": "release-it"
+  },
+  "dependencies": {
+    "@novemberfiveco/oxc-config-cli": "^0.1.0"
+  },
+  "peerDependencies": {
+    "oxlint": ">=1.68.0 <2.0.0",
+    "oxfmt": ">=0.53.0 <1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release v${version}",
+      "tagName": "oxc-config-vite@${version}"
+    },
+    "github": {
+      "release": true,
+      "autoGenerate": true,
+      "releaseName": "oxc-config-vite@${version}",
+      "tokenRef": "GITHUB_TOKEN"
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {
+              "type": "perf",
+              "section": "Performance improvements"
+            }
+          ]
+        },
+        "infile": "CHANGELOG.md",
+        "ignoreRecommendedBump": true
+      }
+    }
+  }
+}

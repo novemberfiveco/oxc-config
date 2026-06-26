@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "@novemberfiveco/oxc-config",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/novemberfiveco/oxc-config.git"
+  },
+  "engines": {
+    "node": ">=22.14.0",
+    "npm": ">=10"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "format": "oxfmt",
+    "ci:lint": "oxfmt --check",
+    "release:cli": "npm run release --workspace=@novemberfiveco/oxc-config-cli",
+    "release:vite": "npm run release --workspace=@novemberfiveco/oxc-config-vite"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^10.0.1",
+    "oxfmt": "^0.53.0",
+    "oxlint": "^1.68.0",
+    "release-it": "^19.2.4"
+  }
+}

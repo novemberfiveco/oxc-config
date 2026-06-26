@@ -1,0 +1,61 @@
+{
+  // Format on save using Oxc (oxfmt)
+  "editor.formatOnSave": true,
+
+  // Set the Oxc extension as the default formatter
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+
+  // Enable Oxlint auto-fix on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
+
+  // Defaults are already true; set explicitly so the formatter tool can't be gated off.
+  "oxc.enable": true,
+  "oxc.enable.oxfmt": true,
+
+  // NOTE for nvm/asdf/volta users: if format-on-save doesn't work and "Oxc Formatter" is missing
+  // from "Format Document With…", the oxfmt node-shim can't find your node on the spawned PATH.
+  // Fix it in your USER settings (not here — the path is machine-specific):
+  //   "oxc.path.node": "/Users/<you>/.nvm/versions/node/<version>/bin/node"
+  // Do NOT use "oxc.useExecPath": true on macOS (SIGTRAP-crashes oxfmt's native binding; see
+  // oxc-vscode PR #124). See https://github.com/novemberfiveco/oxc-config → docs/migration.md for details.
+
+  // Per-language formatter (Oxc handles JS/TS/JSON)
+  "[javascript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.oxc": "explicit"
+    }
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.oxc": "explicit"
+    }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.oxc": "explicit"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.oxc": "explicit"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true
+  }
+}

@@ -1,0 +1,7 @@
+node_modules
+*.log
+.DS_Store
+
+# Local process/scratch artifacts — not part of the published product
+.superpowers/
+docs/superpowers/
