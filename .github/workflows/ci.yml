@@ -28,10 +28,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22.18.0
           registry-url: https://registry.npmjs.org
@@ -46,6 +47,8 @@ jobs:
         run: |
           PRE=""
           if [ "${{ inputs.preRelease }}" = "beta" ]; then PRE="--preRelease=beta"; fi
+          # checkout uses persist-credentials:false, so re-provide push auth for release-it's git push
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
           npm run release:${{ inputs.package }} -- -- --ci -V --increment ${{ inputs.increment }} $PRE
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
