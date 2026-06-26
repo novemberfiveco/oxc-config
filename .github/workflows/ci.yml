@@ -13,24 +13,43 @@ on:
         type: choice
         required: true
         options: [patch, minor, major]
+      preRelease:
+        description: Prerelease channel (none = stable "latest" tag)
+        type: choice
+        required: true
+        default: none
+        options: [none, beta]
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Built-in GITHUB_TOKEN pushes the version commit + tag and creates the GitHub
+    # release — no GH_PUSH_TOKEN secret needed. NPM_TOKEN is the only secret to add.
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          token: ${{ secrets.GH_PUSH_TOKEN }}
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: 22.14.0
+          node-version: 22.18.0
           registry-url: https://registry.npmjs.org
       - run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: npm ci
-      - run: npm run release:${{ inputs.package }} -- -- --ci -V --increment ${{ inputs.increment }}
+      # NOTE: cutting a BETA of `vite` while `cli` is also beta won't resolve — vite depends
+      # on cli via "^0.1.0", which excludes prereleases. For a both-beta cut, publish cli's
+      # beta first, then point vite's cli dep at that exact beta version.
+      - name: Release ${{ inputs.package }}
+        run: |
+          PRE=""
+          if [ "${{ inputs.preRelease }}" = "beta" ]; then PRE="--preRelease=beta"; fi
+          # checkout uses persist-credentials:false, so re-provide push auth for release-it's git push
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
+          npm run release:${{ inputs.package }} -- -- --ci -V --increment ${{ inputs.increment }} $PRE
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
