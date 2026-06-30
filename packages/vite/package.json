@@ -1,6 +1,6 @@
 {
   "name": "@novemberfiveco/oxc-config-vite",
-  "version": "0.1.1",
+  "version": "0.1.2-beta.0",
   "private": false,
   "description": "oxlint + oxfmt configuration for Vite / React projects used by November Five",
   "keywords": [
