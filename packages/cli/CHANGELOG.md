@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2-beta.0](https://github.com/novemberfiveco/oxc-config/compare/oxc-config-cli@0.1.1...oxc-config-cli@0.1.2-beta.0) (2026-06-30)
+
+### Bug Fixes
+
+* add repository field to package.json for OIDC provenance ([#4](https://github.com/novemberfiveco/oxc-config/issues/4)) ([ef0f483](https://github.com/novemberfiveco/oxc-config/commit/ef0f483cd5e83b6103c3b5078b22bf9d2e7f72d6))
+
 ## 0.1.1 (2026-06-26)
 
 ### Features
