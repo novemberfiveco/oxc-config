@@ -19,19 +19,28 @@
   },
   "license": "MIT",
   "type": "module",
+  "types": "./index.d.ts",
   "bin": {
     "oxc-config-vite": "./bin/cli.mjs"
   },
   "exports": {
-    ".": "./index.mjs",
-    "./oxfmt": "./oxfmt.mjs",
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.mjs"
+    },
+    "./oxfmt": {
+      "types": "./oxfmt.d.ts",
+      "default": "./oxfmt.mjs"
+    },
     "./oxlintrc.json": "./.oxlintrc.json",
     "./oxfmtrc.json": "./.oxfmtrc.json"
   },
   "files": [
     "bin",
     "index.mjs",
+    "index.d.ts",
     "oxfmt.mjs",
+    "oxfmt.d.ts",
     ".oxlintrc.json",
     ".oxfmtrc.json"
   ],
