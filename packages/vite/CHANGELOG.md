@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2](https://github.com/novemberfiveco/oxc-config/compare/oxc-config-vite@0.1.2-beta.0...oxc-config-vite@0.1.2) (2026-08-05)
+
+### Bug Fixes
+
+* **vite:** ship type declarations for config entry points ([#6](https://github.com/novemberfiveco/oxc-config/issues/6)) ([f681e53](https://github.com/novemberfiveco/oxc-config/commit/f681e53a35aacb7e964e4aa80f45127539ca47cc))
+
 ## [0.1.2-beta.0](https://github.com/novemberfiveco/oxc-config/compare/oxc-config-vite@0.1.1...oxc-config-vite@0.1.2-beta.0) (2026-06-30)
 
 ### Bug Fixes
