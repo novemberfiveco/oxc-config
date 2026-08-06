@@ -32,7 +32,12 @@
       "types": "./oxfmt.d.ts",
       "default": "./oxfmt.mjs"
     },
+    "./type-aware": {
+      "types": "./type-aware.d.ts",
+      "default": "./type-aware.mjs"
+    },
     "./oxlintrc.json": "./.oxlintrc.json",
+    "./oxlintrc.type-aware.json": "./.oxlintrc.type-aware.json",
     "./oxfmtrc.json": "./.oxfmtrc.json"
   },
   "files": [
@@ -41,7 +46,10 @@
     "index.d.ts",
     "oxfmt.mjs",
     "oxfmt.d.ts",
+    "type-aware.mjs",
+    "type-aware.d.ts",
     ".oxlintrc.json",
+    ".oxlintrc.type-aware.json",
     ".oxfmtrc.json"
   ],
   "engines": {
@@ -55,7 +63,13 @@
   },
   "peerDependencies": {
     "oxlint": ">=1.68.0 <2.0.0",
-    "oxfmt": ">=0.53.0 <1.0.0"
+    "oxfmt": ">=0.53.0 <1.0.0",
+    "oxlint-tsgolint": ">=7.0.0 <8.0.0"
+  },
+  "peerDependenciesMeta": {
+    "oxlint-tsgolint": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public"

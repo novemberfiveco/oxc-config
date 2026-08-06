@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import oxlintConfig from '@novemberfiveco/oxc-config-vite';
 import oxfmtConfig from '@novemberfiveco/oxc-config-vite/oxfmt';
+import typeAwareConfig from '@novemberfiveco/oxc-config-vite/type-aware';
 
 test('default export is the oxlint config object', () => {
   assert.equal(typeof oxlintConfig, 'object');
@@ -15,4 +16,24 @@ test('./oxfmt export is the oxfmt config object', () => {
   assert.equal(oxfmtConfig.singleQuote, true);
   assert.equal(oxfmtConfig.printWidth, 100);
   assert.equal(oxfmtConfig.arrowParens, 'avoid');
+});
+
+test('./type-aware export enables type-aware mode with all rules as error', () => {
+  assert.equal(typeAwareConfig.options.typeAware, true);
+  const rules = Object.entries(typeAwareConfig.rules);
+  assert.equal(rules.length, 7);
+  for (const [name, severity] of rules) {
+    assert.match(name, /^typescript\//, `${name} should be a typescript/* rule`);
+    assert.equal(severity, 'error', `${name} should ship as error`);
+  }
+});
+
+test('the main export does NOT enable type-aware mode', () => {
+  // Enabling it centrally would break every consumer that has not installed
+  // oxlint-tsgolint or migrated its tsconfig off baseUrl / moduleResolution node10.
+  assert.equal(oxlintConfig.options?.typeAware, undefined);
+  const typeAwareRules = Object.keys(oxlintConfig.rules).filter(r =>
+    Object.keys(typeAwareConfig.rules).includes(r),
+  );
+  assert.deepEqual(typeAwareRules, []);
 });
