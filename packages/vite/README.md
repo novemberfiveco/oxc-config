@@ -45,6 +45,68 @@ import config from '@novemberfiveco/oxc-config-vite/oxfmt';
 export default defineConfig({ ...config });
 ```
 
+### Type-aware linting (opt-in)
+
+Type-aware rules need full type information, so they live in a **separate opt-in entry point**. The main
+config never enables them: switching them on requires changes a project has to make deliberately, and
+enabling them centrally would break every consumer that has not made those changes yet.
+
+Prerequisites, both of which fail loudly (exit 1) when missing:
+
+1. `npm install --save-dev --save-exact oxlint-tsgolint@7` — a self-contained binary that embeds the
+   TypeScript 7 compiler. Your own `typescript` version does not need to change.
+2. A `tsconfig.json` with no `baseUrl` and no `moduleResolution: "node"`/`node10`, both removed in TS 7.
+   For a Vite project that means `"moduleResolution": "bundler"` and `"paths": { "*": ["./src/*"] }` in
+   place of `baseUrl: "src"`.
+
+Then extend both entry points:
+
+```ts
+import { defineConfig } from 'oxlint';
+import config from '@novemberfiveco/oxc-config-vite';
+import typeAware from '@novemberfiveco/oxc-config-vite/type-aware';
+
+export default defineConfig({
+  extends: [config, typeAware],
+});
+```
+
+All seven rules ship as `error`. On an existing codebase that is usually thousands of findings, so a
+project adopting this will normally start with everything as a warning and promote rule by rule as each
+is driven to zero. `rules` merge with the project winning per rule:
+
+```ts
+export default defineConfig({
+  extends: [config, typeAware],
+  rules: {
+    'typescript/no-floating-promises': 'warn',
+    'typescript/no-misused-promises': 'warn',
+    'typescript/await-thenable': 'warn',
+    'typescript/no-unnecessary-condition': 'warn',
+    'typescript/prefer-nullish-coalescing': 'warn',
+    'typescript/prefer-optional-chain': 'warn',
+    'typescript/no-unnecessary-type-assertion': 'warn',
+  },
+});
+```
+
+To adopt a rule in only part of the codebase, scope it with `overrides`:
+
+```ts
+overrides: [{ files: ['src/features/**'], rules: { 'typescript/no-floating-promises': 'error' } }],
+```
+
+To back out entirely without removing the import, set `options: { typeAware: false }`. The rules go inert
+and cost nothing.
+
+Two things to know before promoting any of these to `error` in CI:
+
+- **Warnings are not automatically non-blocking.** `--max-warnings=0` (common in lint-staged) and
+  `--deny-warnings` both make warnings fail. Drop those flags during a warn-phase rollout.
+- **Type-aware linting builds a full type graph**, so it costs roughly what `tsc` costs. Measured on a
+  4.6k-file project: the lint step goes from ~1s to ~9s, and from ~250ms to ~880ms per file for
+  pre-commit and editor hooks.
+
 ### Editor fallback (if `oxfmt.config.ts` is not honored)
 
 Some versions of the `oxc.oxc-vscode` extension don't pick up `oxfmt.config.ts`. If format-on-save
