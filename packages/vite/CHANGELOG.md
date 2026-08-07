@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.0](https://github.com/novemberfiveco/oxc-config/compare/oxc-config-vite@0.1.2...oxc-config-vite@0.2.0) (2026-08-07)
+
+### Features
+
+* **vite:** add opt-in type-aware linting entry point ([#7](https://github.com/novemberfiveco/oxc-config/issues/7)) ([ba8054e](https://github.com/novemberfiveco/oxc-config/commit/ba8054eae648786a2dff447b61a21b587867a1bd))
+
 ## [0.1.2](https://github.com/novemberfiveco/oxc-config/compare/oxc-config-vite@0.1.2-beta.0...oxc-config-vite@0.1.2) (2026-08-05)
 
 ### Bug Fixes
