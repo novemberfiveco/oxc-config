@@ -84,6 +84,43 @@ template, the retrofit cost is near zero.
   `node_modules/oxfmt/configuration_schema.json`, not just the website — the full Prettier-compatible
   option set including `arrowParens` is exposed there.
 
+## Lessons from the Belga migration
+
+Issues hit while migrating the Belga.press frontend. Check these before you start; most of them
+cost a day to diagnose.
+
+- **Node 22.18 or later.** The `.ts` config files need Node `^20.19 || >=22.18`. Bump `.nvmrc`
+  and `engines.node` in the same PR, or the editor, pre-commit and CI fail to load the config.
+- **Bitrise ignores `.nvmrc` when `nvm@1` gets `node_version`.** Remove that input so every
+  workflow reads `.nvmrc`. Check `_setup` too: deploy workflows share it, so it breaks after merge.
+  A per-build env override does not replace a variable from `app.envs`; edit the yml.
+- **npm 12 needs Node `^22.22.2`.** CI steps that install `npm@latest` fail or warn on older Node.
+  Pin `npm@11` (11.5.1 or later still supports trusted publishing).
+- **New `@novemberfiveco` versions are blocked for about a day.** The npm org has a minimum
+  release age: the tarball returns 403 and installs fail with `ETARGET`. Clearing the cache won't
+  help. Wait, or ask an npm org owner to lower the setting.
+- **Some tools still need Prettier.** `@svgr/cli` 8 loads `prettier` unconditionally, so
+  `build:svg` broke when Prettier was removed. Search scripts for tools that format their output,
+  and drive `@svgr/core` directly with `oxfmt` afterwards.
+- **`ignorePatterns` replaces the shared list.** Setting it in `oxlint.config.ts` drops the shared
+  entries; copy them in.
+- **Files rewritten on install fail `oxfmt --check`.** For example msw's
+  `public/mockServiceWorker.js`. Add them to `ignorePatterns` in `oxfmt.config.ts`.
+- **lint-staged fails when every staged file is ignored.** Add `--no-error-on-unmatched-pattern`
+  to the `oxlint` command.
+- **Port project-specific ESLint overrides.** For example a `react-hooks/rules-of-hooks` exception
+  for Playwright fixtures goes into `overrides` in `oxlint.config.ts`.
+- **Highvoltage needs 2.2.0 or later** for the oxlint and oxfmt Danger checks.
+- **Type-aware linting needs a modern tsconfig.** `oxlint-tsgolint` rejects `baseUrl` and
+  `moduleResolution: node10`. Use `"paths": { "*": ["./src/*"] }` with
+  `"moduleResolution": "bundler"`. Packages without subpath types (`@hookform/resolvers` before
+  v5) then stop resolving. Expect thousands of warnings on a large codebase, so enable rules one
+  by one.
+- **The VS Code extension can hang on start-up** while it reads your shell environment
+  ([oxc-vscode#185](https://github.com/oxc-project/oxc-vscode/issues/185)). Slow shell init
+  (`ssh-add`, oh-my-zsh updates, nvm auto-switching) is the usual cause. Formatting on save through
+  the RunOnSave extension and a small wrapper script avoids it.
+
 ## Editor setup (per developer — each machine)
 
 The committed `.vscode/settings.json` enables everything portable. Per-machine steps:
